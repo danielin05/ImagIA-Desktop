@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'saveCredentials.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() {  
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => SaveCredentials(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -69,6 +76,19 @@ class _PaginaLogInState extends State<PaginaLogIn> {
 
   @override
   Widget build(BuildContext context) {
+    // Controladores para los campos de texto
+    final TextEditingController urlController = TextEditingController();
+    final TextEditingController userController = TextEditingController();
+    final TextEditingController passwordController = TextEditingController();
+
+    void _saveFile() {
+      final appData = Provider.of<SaveCredentials>(context, listen: false);
+      appData.saveUserCredentials(
+        urlController.text,
+        userController.text,
+      );
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -76,6 +96,7 @@ class _PaginaLogInState extends State<PaginaLogIn> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 400, vertical: 25),
             child: TextField(
+<<<<<<< Updated upstream
               decoration: InputDecoration(
                 border: const OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.blue, width: 2.0),
@@ -86,6 +107,11 @@ class _PaginaLogInState extends State<PaginaLogIn> {
                 focusedBorder: const OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.blue, width: 2.5),
                 ),
+=======
+              controller: urlController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+>>>>>>> Stashed changes
                 hintText: 'URL Servidor',
               ),
             ),
@@ -95,6 +121,7 @@ class _PaginaLogInState extends State<PaginaLogIn> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 400, vertical: 25),
             child: TextFormField(
+              controller: userController,
               decoration: const InputDecoration(
                 border: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.blue, width: 2.0),
@@ -114,6 +141,7 @@ class _PaginaLogInState extends State<PaginaLogIn> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 400, vertical: 25),
             child: TextFormField(
+<<<<<<< Updated upstream
               decoration: InputDecoration(
                 border: const UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.blue, width: 2.0),
@@ -124,6 +152,11 @@ class _PaginaLogInState extends State<PaginaLogIn> {
                 focusedBorder: const UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.blue, width: 2.5),
                 ),
+=======
+              controller: passwordController,
+              decoration: const InputDecoration(
+                border: UnderlineInputBorder(),
+>>>>>>> Stashed changes
                 labelText: 'Contraseña',
                 suffixIcon: IconButton(
                   icon: Icon(
@@ -147,11 +180,23 @@ class _PaginaLogInState extends State<PaginaLogIn> {
           ),
         ),
         Center(
+<<<<<<< Updated upstream
           child: IconButton(
             iconSize: 60,
             icon: const Icon(Icons.arrow_forward_outlined),
             onPressed: () => {_showSnackBar(message: "Usuario guardado correctamente")},
             color: Colors.blue,
+=======
+          child: ElevatedButton(
+            onPressed: _saveFile,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white, 
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+              textStyle: const TextStyle(fontSize: 18),
+            ),
+            child: const Text('Iniciar Sesión'),
+>>>>>>> Stashed changes
           ),
         ),
       ],
