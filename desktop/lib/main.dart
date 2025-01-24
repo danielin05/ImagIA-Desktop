@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-
 
 void main() {
   runApp(const MyApp());
@@ -47,6 +45,26 @@ class _PaginaLogInState extends State<PaginaLogIn> {
     setState(() {
       _obscureText = !_obscureText;
     });
+  }
+
+  void _showSnackBar({
+    required String message,
+    SnackBarAction? action,
+    int duration = 2}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.blue,
+        content: Center(
+          child: Text(
+            message, 
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+        ),
+        action: action,
+        duration: Duration(seconds: duration),
+      )
+    );
   }
 
   @override
@@ -132,17 +150,7 @@ class _PaginaLogInState extends State<PaginaLogIn> {
           child: IconButton(
             iconSize: 60,
             icon: const Icon(Icons.arrow_forward_outlined),
-            onPressed: () {
-              Fluttertoast.showToast(
-                msg: "Usuario guardado correctamente",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.blue,
-                textColor: Colors.black,
-                fontSize: 16.0
-            );
-            },
+            onPressed: () => {_showSnackBar(message: "Usuario guardado correctamente")},
             color: Colors.blue,
           ),
         ),
