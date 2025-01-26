@@ -96,7 +96,7 @@ class _PaginaLogInState extends State<PaginaLogIn> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 400, vertical: 25),
             child: TextField(
-<<<<<<< Updated upstream
+              controller: urlController,
               decoration: InputDecoration(
                 border: const OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.blue, width: 2.0),
@@ -107,11 +107,6 @@ class _PaginaLogInState extends State<PaginaLogIn> {
                 focusedBorder: const OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.blue, width: 2.5),
                 ),
-=======
-              controller: urlController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
->>>>>>> Stashed changes
                 hintText: 'URL Servidor',
               ),
             ),
@@ -141,7 +136,7 @@ class _PaginaLogInState extends State<PaginaLogIn> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 400, vertical: 25),
             child: TextFormField(
-<<<<<<< Updated upstream
+              controller: passwordController,
               decoration: InputDecoration(
                 border: const UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.blue, width: 2.0),
@@ -152,11 +147,6 @@ class _PaginaLogInState extends State<PaginaLogIn> {
                 focusedBorder: const UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.blue, width: 2.5),
                 ),
-=======
-              controller: passwordController,
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
->>>>>>> Stashed changes
                 labelText: 'Contraseña',
                 suffixIcon: IconButton(
                   icon: Icon(
@@ -180,23 +170,11 @@ class _PaginaLogInState extends State<PaginaLogIn> {
           ),
         ),
         Center(
-<<<<<<< Updated upstream
           child: IconButton(
             iconSize: 60,
             icon: const Icon(Icons.arrow_forward_outlined),
-            onPressed: () => {_showSnackBar(message: "Usuario guardado correctamente")},
+            onPressed: () => {_showSnackBar(message: "Usuario guardado correctamente"), _saveFile},
             color: Colors.blue,
-=======
-          child: ElevatedButton(
-            onPressed: _saveFile,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
-              foregroundColor: Colors.white, 
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-              textStyle: const TextStyle(fontSize: 18),
-            ),
-            child: const Text('Iniciar Sesión'),
->>>>>>> Stashed changes
           ),
         ),
       ],
