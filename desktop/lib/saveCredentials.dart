@@ -26,6 +26,27 @@ class SaveCredentials extends ChangeNotifier {
       print('Error al guardar el archivo JSON: $e');
     }
   }
+
+  // Método para cargar las credenciales desde el archivo JSON
+  Future<Map<String, String>> loadCredentials() async {
+    String filePath = 'lib/registros/user_credentials.json';
+    try {
+      final file = File(filePath);
+      if (await file.exists()) {
+        String jsonString = await file.readAsString();
+        Map<String, dynamic> jsonData = jsonDecode(jsonString);
+        return {
+          'url': jsonData['url'] ?? '',
+          'username': jsonData['username'] ?? '',
+        };
+      } else {
+        return {'url': '', 'username': ''};
+      }
+    } catch (e) {
+      print('Error al cargar el archivo JSON: $e');
+      return {'url': '', 'username': ''};
+    }
+  }
   
   void saveUserCredentials(String url, String username) async {
     // Crear instancia de SaveCredentials

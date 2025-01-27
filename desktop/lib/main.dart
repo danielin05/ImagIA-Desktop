@@ -47,6 +47,25 @@ class PaginaLogIn extends StatefulWidget {
 
 class _PaginaLogInState extends State<PaginaLogIn> {
   bool _obscureText = true;
+  // Controladores para los campos de texto
+    final TextEditingController urlController = TextEditingController();
+    final TextEditingController userController = TextEditingController();
+    final TextEditingController passwordController = TextEditingController();
+
+  @override 
+  void initState () {
+    super.initState();
+    _loadCredentialsUser();
+  }
+
+  void _loadCredentialsUser() async {
+    final appData = Provider.of<SaveCredentials>(context, listen: false);
+    Map<String, String> credentials = await appData.loadCredentials();
+    setState(() {
+      urlController.text = credentials['url'] ?? '';
+      userController.text = credentials['username'] ?? '';
+    });
+  }
 
   void _togglePasswordVisibility() {
     setState(() {
@@ -64,7 +83,7 @@ class _PaginaLogInState extends State<PaginaLogIn> {
         content: Center(
           child: Text(
             message, 
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
           ),
         ),
@@ -76,10 +95,6 @@ class _PaginaLogInState extends State<PaginaLogIn> {
 
   @override
   Widget build(BuildContext context) {
-    // Controladores para los campos de texto
-    final TextEditingController urlController = TextEditingController();
-    final TextEditingController userController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
 
     void _saveFile() {
       final appData = Provider.of<SaveCredentials>(context, listen: false);
@@ -89,6 +104,7 @@ class _PaginaLogInState extends State<PaginaLogIn> {
       );
     }
 
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -97,14 +113,14 @@ class _PaginaLogInState extends State<PaginaLogIn> {
             padding: const EdgeInsets.symmetric(horizontal: 400, vertical: 25),
             child: TextField(
               controller: urlController,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.blue, width: 2.0),
                 ),
-                enabledBorder: const OutlineInputBorder(
+                enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.blue, width: 2.0),
                 ),
-                focusedBorder: const OutlineInputBorder(
+                focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.blue, width: 2.5),
                 ),
                 hintText: 'URL Servidor',
@@ -157,15 +173,6 @@ class _PaginaLogInState extends State<PaginaLogIn> {
                 ),
               ),
               obscureText: _obscureText,
-              onChanged: (value) {
-                Future.delayed(const Duration(seconds: 1), () {
-                  if (mounted) {
-                    setState(() {
-                      _obscureText = true;
-                    });
-                  }
-                });
-              },
             ),
           ),
         ),
@@ -173,7 +180,7 @@ class _PaginaLogInState extends State<PaginaLogIn> {
           child: IconButton(
             iconSize: 60,
             icon: const Icon(Icons.arrow_forward_outlined),
-            onPressed: () => {_showSnackBar(message: "Usuario guardado correctamente"), _saveFile},
+            onPressed: () => {_showSnackBar(message: "Usuario guardado correctamente"), _saveFile()},
             color: Colors.blue,
           ),
         ),
