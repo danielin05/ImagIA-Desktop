@@ -105,76 +105,96 @@ class _PaginaLogInState extends State<PaginaLogIn> {
     }
 
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return ListView(
       children: <Widget>[
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 400, vertical: 25),
-            child: TextField(
-              controller: urlController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blue, width: 2.5),
-                ),
-                hintText: 'URL Servidor',
-              ),
-            ),
-          ),
-        ),
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 400, vertical: 25),
-            child: TextFormField(
-              controller: userController,
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                ),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blue, width: 2.5),
-                ),
-                labelText: 'Usuario',
-              ),
-            ),
-          ),
-        ),
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 400, vertical: 25),
-            child: TextFormField(
-              controller: passwordController,
-              decoration: InputDecoration(
-                border: const UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                ),
-                enabledBorder: const UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                ),
-                focusedBorder: const UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blue, width: 2.5),
-                ),
-                labelText: 'Contraseña',
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _obscureText ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-                    color: Colors.blue,
+        LayoutBuilder(
+          builder: (context, constraints) {
+            double paddingHorizontal = constraints.maxWidth * 0.3;
+            double verticalPadding = 25.0;
+
+            return Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: paddingHorizontal, vertical: verticalPadding),
+                child: TextField(
+                  controller: urlController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 2.5),
+                    ),
+                    hintText: 'URL Servidor',
                   ),
-                  onPressed: _togglePasswordVisibility,
                 ),
               ),
-              obscureText: _obscureText,
-            ),
-          ),
+            );
+          },
+        ),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            double paddingHorizontal = constraints.maxWidth * 0.3;
+            double verticalPadding = 25.0;
+
+            return Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: paddingHorizontal, vertical: verticalPadding),
+                child: TextFormField(
+                  controller: userController,
+                  decoration: const InputDecoration(
+                    border: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 2.5),
+                    ),
+                    labelText: 'Usuario',
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            double paddingHorizontal = constraints.maxWidth * 0.3;
+            double verticalPadding = 25.0;
+
+            return Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: paddingHorizontal, vertical: verticalPadding),
+                child: TextFormField(
+                  controller: passwordController,
+                  decoration: InputDecoration(
+                    border: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                    ),
+                    enabledBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                    ),
+                    focusedBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 2.5),
+                    ),
+                    labelText: 'Contraseña',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureText ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                        color: Colors.blue,
+                      ),
+                      onPressed: _togglePasswordVisibility,
+                    ),
+                  ),
+                  obscureText: _obscureText,
+                ),
+              ),
+            );
+          },
         ),
         Center(
           child: IconButton(
