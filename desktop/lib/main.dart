@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'saveCredentials.dart';
+import 'Providers/UserProvider.dart';
+import 'Scenes/UserListScene.dart';
 
 void main() {  
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => SaveCredentials(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => UserProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => SaveCredentials(),
+        ),
+      ],
       child: const MyApp(),
     ),
   );
@@ -93,20 +102,25 @@ class _PaginaLogInState extends State<PaginaLogIn> {
     );
   }
 
+  void _saveFile() {
+    final appData = Provider.of<SaveCredentials>(context, listen: false);
+    appData.saveUserCredentials(
+      urlController.text,
+      userController.text,
+    );
+  }
+
+  void _goToUserList() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => UserListScene()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-
-    void _saveFile() {
-      final appData = Provider.of<SaveCredentials>(context, listen: false);
-      appData.saveUserCredentials(
-        urlController.text,
-        userController.text,
-      );
-    }
-
-
     return ListView(
-      children: <Widget>[
+      children: [
         LayoutBuilder(
           builder: (context, constraints) {
             double paddingHorizontal = constraints.maxWidth * 0.3;
@@ -200,7 +214,7 @@ class _PaginaLogInState extends State<PaginaLogIn> {
           child: IconButton(
             iconSize: 60,
             icon: const Icon(Icons.arrow_forward_outlined),
-            onPressed: () => {_showSnackBar(message: "Usuario guardado correctamente"), _saveFile()},
+            onPressed: () => {_showSnackBar(message: "Usuario guardado correctamente"), _saveFile(), _goToUserList()},
             color: Colors.blue,
           ),
         ),
