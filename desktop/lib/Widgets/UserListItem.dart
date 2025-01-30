@@ -69,57 +69,72 @@ class UserListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: EdgeInsets.symmetric(vertical: 3, horizontal: 16),  // Padding inside the tile
+      contentPadding: EdgeInsets.symmetric(vertical: 3, horizontal: 16),
       title: Container(
         padding: const EdgeInsets.all(8),
         height: 60,
         decoration: BoxDecoration(
-          color: Colors.white,  // Background color for the container
-          borderRadius: BorderRadius.circular(8),  // Rounded corners
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.1),
               blurRadius: 5,
-              offset: Offset(0, 2), // Shadow direction
+              offset: Offset(0, 2),
             ),
           ],
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,  // Space between elements
-          children: [
-            SizedBox (
-              width: 30,
-              child: Text(
-                user.id.toString(),
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black87),
-                overflow: TextOverflow.ellipsis,
-              ),
+        // Wrap the Row in a SingleChildScrollView
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minWidth: MediaQuery.of(context).size.width - 48, // Account for padding
             ),
-            SizedBox(
-              width: 200,
-              child: Text(
-                user.nickname,
-                style: const TextStyle(fontSize: 16, color: Colors.black54),
-                overflow: TextOverflow.ellipsis,
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 30,
+                      child: Text(
+                        user.id.toString(),
+                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black87),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    SizedBox(
+                      width: 200,
+                      child: Text(
+                        user.nickname,
+                        style: const TextStyle(fontSize: 16, color: Colors.black54),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    SizedBox(
+                      width: 350,
+                      child: Text(
+                        "Email: ${user.email}",
+                        style: const TextStyle(fontSize: 16, color: Colors.black54),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(width: 16),
+                TextButton(
+                  onPressed: () => _changePlan(context, user),
+                  child: const Text(
+                    'Edit Plan',
+                    style: TextStyle(color: Colors.blueAccent),
+                  ),
+                ),
+              ],
             ),
-            SizedBox(
-              width: 350,
-              child: Text(
-                "Email: ${user.email}",
-                style: const TextStyle(fontSize: 16, color: Colors.black54),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            const Expanded(child: SizedBox()),
-            TextButton(
-              onPressed: () => _changePlan(context, user),
-              child: const Text(
-                'Edit Plan',
-                style: TextStyle(color: Colors.blueAccent),  // Text color for the button
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
