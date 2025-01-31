@@ -1,5 +1,8 @@
+import 'package:desktop/Utils/ServerUtils.dart';
 import 'package:desktop/model/userModel.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:desktop/Providers/UserProvider.dart';
 
 class UserListItem extends StatelessWidget {
   final UserModel user;
@@ -53,8 +56,16 @@ class UserListItem extends StatelessWidget {
             ),
             const SizedBox(width: 5),
             ElevatedButton(
-              onPressed: selectedPlan != null ? () {
+              onPressed: selectedPlan != null ? () async {
                 // Handle saving the selected plan
+                print('Selected plan: $selectedPlan');
+                final result = await ServerUtils.changePlan(user.id, selectedPlan!);
+                if (result.$1) {
+                  print('Plan changed successfully');
+                  Provider.of<UserProvider>(context, listen: false).loadUsers();
+                } else {
+                  print('Error changing plan: ${result.$2}');
+                }
                 // TODO: Save the selected plan
                 Navigator.pop(context, selectedPlan);
               } : null,
@@ -118,6 +129,15 @@ class UserListItem extends StatelessWidget {
                       width: 350,
                       child: Text(
                         "Email: ${user.email}",
+                        style: const TextStyle(fontSize: 16, color: Colors.black54),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    SizedBox(
+                      width: 350,
+                      child: Text(
+                        "Plan: ${user.plan}",
                         style: const TextStyle(fontSize: 16, color: Colors.black54),
                         overflow: TextOverflow.ellipsis,
                       ),

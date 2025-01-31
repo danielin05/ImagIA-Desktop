@@ -10,5 +10,5 @@ class UserModel {
   : id = json['id'],
     nickname = json['nickname'],
     email = json['email'],
-    plan = json['plan'];
+    plan = json['planning'];
 }

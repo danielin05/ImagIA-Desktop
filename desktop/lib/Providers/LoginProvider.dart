@@ -13,9 +13,10 @@ class LoginProvider extends ChangeNotifier {
     ServerUtils.baseUrl = url;
     notifyListeners();  
 
-    final (bool success, String key, String error) = await ServerUtils.login(username, password);
+    final (bool success, String? key, String error) = await ServerUtils.login(username, password);
     if (success) {
       apiKey = key;  
+      print(apiKey);
     } else {
       errorMessage = error;
     }

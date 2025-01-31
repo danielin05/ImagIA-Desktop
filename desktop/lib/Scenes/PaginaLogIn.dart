@@ -26,12 +26,12 @@ class _PaginaLogInState extends State<PaginaLogIn> {
   }
 
   void _loadCredentialsUser() async {
-    final appData = Provider.of<SaveCredentials>(context, listen: false);
+    /*final appData = Provider.of<SaveCredentials>(context, listen: false);
     Map<String, String> credentials = await appData.loadCredentials();
     setState(() {
       urlController.text = credentials['url'] ?? '';
       userController.text = credentials['username'] ?? '';
-    });
+    });*/
   }
 
   void _togglePasswordVisibility() {
@@ -104,6 +104,7 @@ class _PaginaLogInState extends State<PaginaLogIn> {
                     await context.read<LoginProvider>().login(url, username, password);
 
                     if (loginProvider.apiKey != null) {
+                      print("loginpage ${loginProvider.apiKey}");
                       _goToUserList();
                     } else {
                       // Show error if login fails

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:desktop/model/userModel.dart';
 import 'package:provider/provider.dart';
 import 'package:desktop/Widgets/UserListItem.dart';
+import 'package:desktop/Providers/LoginProvider.dart';
 
 class UserListScene extends StatefulWidget {
   @override
@@ -12,6 +13,7 @@ class UserListScene extends StatefulWidget {
 class _UserListSceneState extends State<UserListScene> {
 
   List<UserModel> users = [];
+  late final String apiKey;
 
   @override
   void initState() {
