@@ -1,16 +1,31 @@
 import 'package:flutter/material.dart';
 
-class ResponsiveTextField extends StatelessWidget {
+class ResponsiveTextField extends StatefulWidget {
   final TextEditingController controller;
   final String text;
   final bool underLine;
+  final bool hidable;
 
   const ResponsiveTextField({
     Key? key,
-     required this.controller,
-     required this.text,
-     required this.underLine,
-     }) : super(key: key);
+    required this.controller,
+    required this.text,
+    required this.underLine,
+    this.hidable = false,
+  }) : super(key: key);
+
+  @override
+  State<ResponsiveTextField> createState() => _ResponsiveTextFieldState();
+}
+
+class _ResponsiveTextFieldState extends State<ResponsiveTextField> {
+  bool obscureText = false; 
+
+  void _toggleVisibility() {
+    setState(() {
+      obscureText = !obscureText;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +37,9 @@ class ResponsiveTextField extends StatelessWidget {
         return Center(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: paddingHorizontal, vertical: verticalPadding),
-            child: TextField(
-              controller: controller,
-              decoration: underLine ? 
+            child: TextFormField(
+              controller: widget.controller,
+              decoration: widget.underLine ?
               InputDecoration(
                 border: const UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.blue, width: 2.0),
@@ -35,7 +50,14 @@ class ResponsiveTextField extends StatelessWidget {
                 focusedBorder: const UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.blue, width: 2.5),
                 ),
-                labelText: text,
+                labelText: widget.text,
+                suffixIcon: widget.hidable ? IconButton(
+                  icon: Icon(
+                    obscureText ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                    color: Colors.blue,
+                  ),
+                  onPressed: _toggleVisibility,
+                ) : null,
               )
               : InputDecoration(
                 border: const OutlineInputBorder(
@@ -47,8 +69,16 @@ class ResponsiveTextField extends StatelessWidget {
                 focusedBorder: const OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.blue, width: 2.5),
                 ),
-                labelText: text,
+                labelText: widget.text,
+                suffixIcon: widget.hidable ? IconButton(
+                  icon: Icon(
+                    obscureText ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                    color: Colors.blue,
+                  ),
+                  onPressed: _toggleVisibility,
+                ) : null,
               ),
+              obscureText: obscureText,
             ),
           ),
         );

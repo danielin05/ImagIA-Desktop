@@ -1,3 +1,4 @@
+import 'package:desktop/Providers/CredentialsProvider.dart';
 import 'package:desktop/Providers/LoginProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +14,6 @@ class PaginaLogIn extends StatefulWidget {
 }
 
 class _PaginaLogInState extends State<PaginaLogIn> {
-  bool _obscureText = true;
   // Controladores para los campos de texto
     final TextEditingController urlController = TextEditingController();
     final TextEditingController userController = TextEditingController();
@@ -26,17 +26,15 @@ class _PaginaLogInState extends State<PaginaLogIn> {
   }
 
   void _loadCredentialsUser() async {
-    /*final appData = Provider.of<SaveCredentials>(context, listen: false);
-    Map<String, String> credentials = await appData.loadCredentials();
+    final credentials = Provider.of<CredentialsProvider>(context, listen: false);
+    await credentials.loadInitialCredentials();
+    if (credentials.apiKey != '') {
+      _goToUserList();
+    }
     setState(() {
-      urlController.text = credentials['url'] ?? '';
-      userController.text = credentials['username'] ?? '';
-    });*/
-  }
-
-  void _togglePasswordVisibility() {
-    setState(() {
-      _obscureText = !_obscureText;
+      urlController.text = credentials.url;
+      userController.text = credentials.username;
+      passwordController.text = '';
     });
   }
 
@@ -61,11 +59,19 @@ class _PaginaLogInState extends State<PaginaLogIn> {
   }
 
   void _saveFile() {
-    /*final appData = Provider.of<SaveCredentials>(context, listen: false);
-    appData.saveUserCredentials(
+    Provider.of<CredentialsProvider>(context, listen: false).updateCredentials(
       urlController.text,
       userController.text,
-    );*/
+      ''
+    );
+  }
+
+  void _saveApiKey(String apiKey) {
+    Provider.of<CredentialsProvider>(context, listen: false).updateCredentials(
+      urlController.text,
+      userController.text,
+      apiKey
+    );
   }
 
   void _goToUserList() {
@@ -82,7 +88,7 @@ class _PaginaLogInState extends State<PaginaLogIn> {
       children: [
         ResponsiveTextField(controller: urlController, text:  "URL Servidor", underLine: false),
         ResponsiveTextField(controller: userController, text:  "Usuario", underLine: true),
-        ResponsiveTextField(controller: passwordController, text: "Contraseña", underLine: true),
+        ResponsiveTextField(controller: passwordController, text: "Contraseña", underLine: true, hidable: true),
         Center(
           child: Consumer<LoginProvider>(
             builder: (context, loginProvider, child) {
@@ -105,6 +111,7 @@ class _PaginaLogInState extends State<PaginaLogIn> {
 
                     if (loginProvider.apiKey != null) {
                       print("loginpage ${loginProvider.apiKey}");
+                      _saveApiKey(loginProvider.apiKey!);
                       _goToUserList();
                     } else {
                       // Show error if login fails

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'Providers/saveCredentials.dart';
+import 'Providers/CredentialsProvider.dart';
 import 'Providers/UserProvider.dart';
 import 'Providers/LoginProvider.dart';
 import 'Scenes/PaginaLogIn.dart';
@@ -13,7 +13,7 @@ void main() {
           create: (context) => UserProvider(),
         ),
         ChangeNotifierProvider(
-          create: (context) => SaveCredentials(),
+          create: (context) => CredentialsProvider(),
         ),
         ChangeNotifierProvider(
           create: (context) => LoginProvider(),
@@ -50,3 +50,12 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
+
+/*
+
+TODO:
+-Use the new SaveCredentials Provider in the LoginS
+-if an apiKey is found on start directly go to the usersScene
+ if not go to the loginScene with saveCredentials on the textfields*/
