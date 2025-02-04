@@ -24,21 +24,28 @@ class _UserListSceneState extends State<UserListScene> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Lista de Usuarios")),
-      body: Consumer<UserProvider>(
-        builder: (context, userProvider, child) {
-          if (userProvider.users.isEmpty) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          return ListView.builder(
-            itemCount: userProvider.users.length,
-            itemBuilder: (context, index) {
-              return UserListItem(user: userProvider.users[index]);
-            },
-          );
-        },
-      ),
-    );
-  }
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text("Lista de Usuarios"),
+    ),
+    body: Consumer<UserProvider>(
+      builder: (context, userProvider, child) {
+        if (userProvider.users.isEmpty) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        return ListView.builder(
+          itemCount: userProvider.users.length,
+          itemBuilder: (context, index) {
+            return UserListItem(user: userProvider.users[index]);
+          },
+        );
+      },
+    ),
+    floatingActionButton: FloatingActionButton(
+      onPressed: () => Provider.of<UserProvider>(context, listen: false).loadUsers(),
+      child: const Icon(Icons.refresh, size: 36),
+    ),
+    floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+  );
+}
 }
