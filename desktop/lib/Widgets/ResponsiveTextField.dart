@@ -21,6 +21,12 @@ class ResponsiveTextField extends StatefulWidget {
 class _ResponsiveTextFieldState extends State<ResponsiveTextField> {
   bool obscureText = false; 
 
+  @override
+  void initState() {
+    super.initState();
+    obscureText = true;
+  }
+
   void _toggleVisibility() {
     setState(() {
       obscureText = !obscureText;
@@ -78,7 +84,7 @@ class _ResponsiveTextFieldState extends State<ResponsiveTextField> {
                   onPressed: _toggleVisibility,
                 ) : null,
               ),
-              obscureText: obscureText,
+              obscureText: widget.hidable && obscureText,
             ),
           ),
         );

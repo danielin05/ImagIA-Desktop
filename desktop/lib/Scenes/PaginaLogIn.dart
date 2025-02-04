@@ -2,7 +2,7 @@ import 'package:desktop/Providers/CredentialsProvider.dart';
 import 'package:desktop/Providers/LoginProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:desktop/Providers/SaveCredentials.dart';
+import 'package:desktop/Utils/ServerUtils.dart';
 import 'UserListScene.dart';
 import 'package:desktop/Widgets/ResponsiveTextField.dart';
 
@@ -29,6 +29,8 @@ class _PaginaLogInState extends State<PaginaLogIn> {
     final credentials = Provider.of<CredentialsProvider>(context, listen: false);
     await credentials.loadInitialCredentials();
     if (credentials.apiKey != '') {
+      ServerUtils.baseUrl = credentials.url;
+      ServerUtils.apiKey = credentials.apiKey;
       _goToUserList();
     }
     setState(() {
@@ -115,7 +117,7 @@ class _PaginaLogInState extends State<PaginaLogIn> {
                       _goToUserList();
                     } else {
                       // Show error if login fails
-                      _showSnackBar(message: "Error al iniciar sesión: ${loginProvider.errorMessage}");
+                      _showSnackBar(message: "Error al iniciar sesión: ${loginProvider.errorMessage}", duration: 15);
                     }
                   },
               );
