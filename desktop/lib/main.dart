@@ -4,6 +4,8 @@ import 'Providers/CredentialsProvider.dart';
 import 'Providers/UserProvider.dart';
 import 'Providers/LoginProvider.dart';
 import 'Scenes/PaginaLogIn.dart';
+import 'Providers/LogsProvider.dart';
+import 'Providers/RequestsProvider.dart';
 
 void main() {  
   runApp(
@@ -18,6 +20,12 @@ void main() {
         ChangeNotifierProvider(
           create: (context) => LoginProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => LogsProvider(),
+        ),
+        ChangeNotifierProvider(create:
+          (context) => RequestsProvider(),
+        )
       ],
       child: const MyApp(),
     ),

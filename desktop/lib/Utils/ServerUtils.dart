@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'package:desktop/model/BarGraphData.dart';
 import 'package:desktop/model/userModel.dart';
 import 'package:http/http.dart' as http;
+import 'package:desktop/model/LogModel.dart';
 
 class ServerUtils {
   static String baseUrl = '';
@@ -107,5 +109,85 @@ class ServerUtils {
       error = e.toString();
     }
     return (success, error);
+  }
+
+  static Future<(bool success, List<LogModel> data, String error)> getLogs(String messageFilter, String tagFilter) async {
+    bool success = false;
+    List<LogModel> data = [];
+    String error = '';
+
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/api/admin/logs/list'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $apiKey',
+        },
+        body: jsonEncode({
+          'messageFilter': messageFilter,
+          'tagFilter': tagFilter,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body);
+        print("jsonResponse $jsonResponse");
+        success = true;
+        List<dynamic> logs = jsonResponse['data'] ?? [];
+        print(logs);
+        for (Map<String, dynamic> log in logs) {
+          print(log);
+          data.add(LogModel.fromJson(log));
+        }
+      } else {
+        success = false;
+        Map<String, dynamic> body = jsonDecode(response.body);
+        error = body['message'] ?? '';
+      }
+    } catch (e) {
+      success = false;
+      error = e.toString();
+    }
+    return (success, data, error);
+  }
+
+  static Future<(bool success, BarGraphData data, String error)> getRequests() async {
+    bool success = false;
+    BarGraphData data = const BarGraphData(values: [], labels: [], maxValue: 0);
+    String error = '';
+
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/api/admin/requests/list'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $apiKey',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body);
+        print(jsonResponse);
+        success = true;
+        List<dynamic> requests = jsonResponse['data'] ?? [];
+        print(requests);
+        List<double> values = [];
+        List<String> labels = [];
+        for (Map<String, dynamic> request in requests) {
+          //[{tag: ERROR, total: 11}, {tag: Find Users, total: 9}, {tag: Login, total: 1}]
+          values.add(double.parse(request['total'].toString()));
+          labels.add(request['tag']);
+        }
+        data = BarGraphData(values: values, labels: labels, maxValue: values.reduce((a, b) => a > b ? a : b));
+      } else {
+        success = false;
+        Map<String, dynamic> body = jsonDecode(response.body);
+        error = body['message'] ?? '';
+      }
+    } catch (e) {
+      success = false;
+      error = e.toString();
+    } 
+    return (success, data, error);
   }
 }
