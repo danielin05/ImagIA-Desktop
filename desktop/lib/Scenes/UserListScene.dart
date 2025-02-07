@@ -1,6 +1,6 @@
 import 'package:desktop/Providers/UserProvider.dart';
 import 'package:flutter/material.dart';
-import 'package:desktop/model/userModel.dart';
+import 'package:desktop/model/UserModel.dart';
 import 'package:provider/provider.dart';
 import 'package:desktop/Widgets/UserListItem.dart';
 import 'package:desktop/Providers/LoginProvider.dart';

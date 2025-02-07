@@ -1,5 +1,5 @@
 import 'package:desktop/Utils/ServerUtils.dart';
-import 'package:desktop/model/userModel.dart';
+import 'package:desktop/model/UserModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:desktop/Providers/UserProvider.dart';
@@ -77,6 +77,72 @@ class UserListItem extends StatelessWidget {
     );
   }
 
+  // Displays a dialog with a TextField to change the plan, buttons: Cancel, Save
+void _changeQuota(BuildContext context, UserModel user) {
+  // Ensure the initial quota value is an integer (or null if it's not valid)
+  int? selectedQuota = user.quota;
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Change Quota'),
+        content: StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Container(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: TextEditingController(text: selectedQuota?.toString() ?? ''),
+                    keyboardType: TextInputType.number,  // Restrict input to numbers
+                    decoration: InputDecoration(
+                      labelText: 'Enter a Quota',
+                    ),
+                    onChanged: (String newValue) {
+                      // Try to convert the input string to an integer
+                      setState(() {
+                        selectedQuota = int.tryParse(newValue);
+                      });
+                    },
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Cancel'),
+          ),
+          const SizedBox(width: 5),
+          ElevatedButton(
+            onPressed: selectedQuota != null
+                ? () async {
+                    // Handle saving the selected plan
+                    print('Selected plan: $selectedQuota');
+                    final result = await ServerUtils.changeQuota(user.id, selectedQuota!);
+                    if (result.$1) {
+                      print('Plan changed successfully');
+                      Provider.of<UserProvider>(context, listen: false).loadUsers();
+                    } else {
+                      print('Error changing plan: ${result.$2}');
+                    }
+                    // TODO: Save the selected plan
+                    Navigator.pop(context, selectedQuota);
+                  }
+                : null,
+            child: Text('Save'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -149,6 +215,13 @@ class UserListItem extends StatelessWidget {
                   onPressed: () => _changePlan(context, user),
                   child: const Text(
                     'Edit Plan',
+                    style: TextStyle(color: Colors.blueAccent),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () => _changeQuota(context, user),
+                  child: const Text(
+                    'Edit Quota',
                     style: TextStyle(color: Colors.blueAccent),
                   ),
                 ),

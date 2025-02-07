@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:desktop/model/userModel.dart';
+import 'package:desktop/model/UserModel.dart';
 import 'package:http/http.dart' as http;
 
 class ServerUtils {
@@ -91,6 +91,38 @@ class ServerUtils {
         },
         body: jsonEncode({
           'plan': plan,
+          'id': id.toString(),
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        success = true;
+      } else {
+        success = false;
+        Map<String, dynamic> body = jsonDecode(response.body);
+        error = body['message'] ?? '';
+      }
+    } catch (e) {
+      success = false;
+      error = e.toString();
+    }
+    return (success, error);
+  }
+
+
+  static Future<(bool success, String error)> changeQuota(int id, int quota) async {
+    bool success = false;
+    String error = '';
+
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/api/admin/usuaris/quota'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $apiKey',
+        },
+        body: jsonEncode({
+          'quota': quota.toString(),
           'id': id.toString(),
         }),
       );
