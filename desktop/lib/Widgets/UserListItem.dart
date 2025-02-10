@@ -80,7 +80,7 @@ class UserListItem extends StatelessWidget {
   // Displays a dialog with a TextField to change the plan, buttons: Cancel, Save
 void _changeQuota(BuildContext context, UserModel user) {
   // Ensure the initial quota value is an integer (or null if it's not valid)
-  int? selectedQuota = user.quota;
+  TextEditingController controlador = TextEditingController(text: user.quota?.toString() ?? '');
 
   showDialog(
     context: context,
@@ -94,17 +94,11 @@ void _changeQuota(BuildContext context, UserModel user) {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   TextField(
-                    controller: TextEditingController(text: selectedQuota?.toString() ?? ''),
+                    controller: controlador,
                     keyboardType: TextInputType.number,  // Restrict input to numbers
                     decoration: InputDecoration(
                       labelText: 'Enter a Quota',
                     ),
-                    onChanged: (String newValue) {
-                      // Try to convert the input string to an integer
-                      setState(() {
-                        selectedQuota = int.tryParse(newValue);
-                      });
-                    },
                   ),
                 ],
               ),
@@ -118,19 +112,19 @@ void _changeQuota(BuildContext context, UserModel user) {
           ),
           const SizedBox(width: 5),
           ElevatedButton(
-            onPressed: selectedQuota != null
+            onPressed: controlador.text != null
                 ? () async {
-                    // Handle saving the selected plan
-                    print('Selected plan: $selectedQuota');
-                    final result = await ServerUtils.changeQuota(user.id, selectedQuota!);
+                    // Handle saving the selected quota
+                    print('Selected quota: ${controlador.text}');
+                    final result = await ServerUtils.changeQuota(user.id, controlador.text!);
                     if (result.$1) {
-                      print('Plan changed successfully');
+                      print('Quota changed successfully');
                       Provider.of<UserProvider>(context, listen: false).loadUsers();
                     } else {
-                      print('Error changing plan: ${result.$2}');
+                      print('Error changing quota: ${result.$2}');
                     }
-                    // TODO: Save the selected plan
-                    Navigator.pop(context, selectedQuota);
+                    // TODO: Save the selected quota
+                    Navigator.pop(context, controlador.text);
                   }
                 : null,
             child: Text('Save'),

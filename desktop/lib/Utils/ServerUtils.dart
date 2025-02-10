@@ -111,7 +111,7 @@ class ServerUtils {
     return (success, error);
   }
 
-  static Future<(bool success, String error)> changeQuota(int id, int quota) async {
+  static Future<(bool success, String error)> changeQuota(int id, String quota) async {
     bool success = false;
     String error = '';
 
