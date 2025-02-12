@@ -27,7 +27,6 @@ class ServerUtils {
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
-        print(jsonResponse);
         success = true;
         key = jsonResponse['data']['apiKey'];
         apiKey = key!;
@@ -56,15 +55,11 @@ class ServerUtils {
           'Authorization': 'Bearer $apiKey',
         },
       );
-      print('Bearer $apiKey');
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
-        print(jsonResponse);
         success = true;
         List<dynamic> users = jsonResponse['data'] ?? [];
-        print(users);
         for (Map<String, dynamic> user in users) {
-          print(user);
           data.add(UserModel.fromJson(user));
         }
       } else {
@@ -162,12 +157,9 @@ class ServerUtils {
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
-        print("jsonResponse $jsonResponse");
         success = true;
         List<dynamic> logs = jsonResponse['data'] ?? [];
-        print(logs);
         for (Map<String, dynamic> log in logs) {
-          print(log);
           data.add(LogModel.fromJson(log));
         }
       } else {
@@ -198,10 +190,8 @@ class ServerUtils {
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
-        print(jsonResponse);
         success = true;
         List<dynamic> requests = jsonResponse['data'] ?? [];
-        print(requests);
         List<int> values = [];
         List<String> labels = [];
         for (Map<String, dynamic> request in requests) {

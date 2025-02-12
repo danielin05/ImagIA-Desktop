@@ -18,8 +18,8 @@
       Provider.of<LogsProvider>(context, listen: false).loadLogs();
 
       // Listen for changes to the message and tag filters
-      messageController.addListener(_updateLogs);
-      tagController.addListener(_updateLogs);
+      //messageController.addListener(_updateLogs);
+      //tagController.addListener(_updateLogs);
     }
 
     void _updateLogs() {
