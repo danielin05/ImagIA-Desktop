@@ -132,7 +132,7 @@ class BarGraphPainter extends CustomPainter {
 
       // Draw value label
       textPainter.text = TextSpan(
-        text: data.values[i].toStringAsFixed(1),
+        text: data.values[i].toString(),
         style: const TextStyle(color: Colors.black, fontSize: 12),
       );
       textPainter.layout();

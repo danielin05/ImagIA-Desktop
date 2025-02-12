@@ -1,7 +1,7 @@
 class BarGraphData {
-  final List<double> values;
+  final List<int> values;
   final List<String> labels;
-  final double maxValue;
+  final int maxValue;
 
   const BarGraphData({
     required this.values,

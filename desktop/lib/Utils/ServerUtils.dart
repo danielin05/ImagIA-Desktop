@@ -202,11 +202,11 @@ class ServerUtils {
         success = true;
         List<dynamic> requests = jsonResponse['data'] ?? [];
         print(requests);
-        List<double> values = [];
+        List<int> values = [];
         List<String> labels = [];
         for (Map<String, dynamic> request in requests) {
           //[{tag: ERROR, total: 11}, {tag: Find Users, total: 9}, {tag: Login, total: 1}]
-          values.add(double.parse(request['total'].toString()));
+          values.add(int.parse(request['total'].toString()));
           labels.add(request['tag']);
         }
         data = BarGraphData(values: values, labels: labels, maxValue: values.reduce((a, b) => a > b ? a : b));
